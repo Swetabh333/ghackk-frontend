@@ -23,7 +23,7 @@ const Page = ({ params }: { params: { id: string } }) => {
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  }, [params.id]);
   if (!webtoon) return <div>Loading...</div>;
   return (
     <div className="flex flex-col items-center justify-center">

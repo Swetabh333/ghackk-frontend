@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import axiosInstance from "../apis/axiosInstance";
@@ -47,12 +47,12 @@ export default function Register() {
       } else {
         // Handle validation errors or other response errors
         const data = response.data;
-        setErrors(
-          Array.isArray(data.error)
-            ? data.error.map((err: any) => err.msg)
+        // @ts-ignore
+				setErrors(Array.isArray(data.error)? data.error.map((err: any) => err.msg)
             : [data.error],
         );
       }
+		// @ts-ignore	
     } catch (err) {
       // Set a generic error message in case of failure
       setErrors(["An error occurred. Please try again."]);

@@ -2,7 +2,7 @@
 
 import { useAuthStore } from "@/store/user";
 import { ReactNode, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 const Protector = ({ children }: { children: ReactNode }) => {
   const { isLoggedIn } = useAuthStore((state) => state);
@@ -11,7 +11,7 @@ const Protector = ({ children }: { children: ReactNode }) => {
     if (!isLoggedIn) {
       router.push("/");
     }
-  }, []);
+  }, [isLoggedIn]);
   return <div>{isLoggedIn && children}</div>;
 };
 export default Protector;

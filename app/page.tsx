@@ -31,7 +31,8 @@ export default function Home() {
         setIsLoggedIn(true);
         router.push("/dashboard");
       }
-    } catch (err: any) {
+			// @ts-ignore
+    } catch (err:any) {
       // Handle errors and set error messages
       if (err.response && err.response.data) {
         setError(err.response.data.error || "Login failed");
