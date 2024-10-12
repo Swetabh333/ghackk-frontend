@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useAuthStore } from "@/store/user";
+import axiosInstance from "./apis/axiosInstance";
 
 export default function Home() {
   const [username, setUsername] = useState("");
@@ -10,25 +12,35 @@ export default function Home() {
   const [error, setError] = useState("");
   const router = useRouter();
 
+  const { setUser, setIsLoggedIn } = useAuthStore((state) => state);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
 
     try {
-      const response = await fetch("http://localhost:3000/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+      // Use axiosInstance for the POST request
+      const response = await axiosInstance.post("/auth/login", {
+        username,
+        password,
       });
 
-      if (response.ok) {
+      // Check if the request was successful
+      if (response.status === 200) {
+        setUser(username);
+        setIsLoggedIn(true);
         router.push("/dashboard");
-      } else {
-        const data = await response.json();
-        setError(data.error || "Login failed");
       }
-    } catch (err) {
-      setError("An error occurred. Please try again. ");
+    } catch (err: any) {
+      // Handle errors and set error messages
+      if (err.response && err.response.data) {
+        setError(err.response.data.error || "Login failed");
+      } else {
+        setError("An error occurred. Please try again.");
+      }
+
+      setUser("");
+      setIsLoggedIn(false);
     }
   };
 

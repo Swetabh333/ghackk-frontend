@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import axiosInstance from "../apis/axiosInstance";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -37,17 +38,15 @@ export default function Register() {
     if (!validateForm()) return;
 
     try {
-      const response = await fetch("http://localhost:3000/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      // Make the POST request using axiosInstance
+      const response = await axiosInstance.post("/auth/register", formData);
 
-      const data = await response.json();
-
-      if (response.ok) {
+      // If the request is successful (status 200)
+      if (response.status === 200) {
         router.push("/"); // Redirect to login page after successful registration
       } else {
+        // Handle validation errors or other response errors
+        const data = response.data;
         setErrors(
           Array.isArray(data.error)
             ? data.error.map((err: any) => err.msg)
@@ -55,10 +54,12 @@ export default function Register() {
         );
       }
     } catch (err) {
+      // Set a generic error message in case of failure
       setErrors(["An error occurred. Please try again."]);
     }
   };
 
+	
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
