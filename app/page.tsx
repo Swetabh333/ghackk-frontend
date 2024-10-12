@@ -5,6 +5,11 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuthStore } from "@/store/user";
 import axiosInstance from "./apis/axiosInstance";
+import { AxiosError } from "axios";
+
+interface ErrorResponse {
+  error: string;
+}
 
 export default function Home() {
   const [username, setUsername] = useState("");
@@ -31,17 +36,13 @@ export default function Home() {
         setIsLoggedIn(true);
         router.push("/dashboard");
       }
-			// @ts-ignore
-    } catch (err:any) {
-      // Handle errors and set error messages
-      if (err.response && err.response.data) {
-        setError(err.response.data.error || "Login failed");
+    } catch (err) {
+      if (err instanceof AxiosError && err.response && err.response.data) {
+        const data = err.response.data as ErrorResponse; // Type assertion
+        setError(data.error || "Login failed");
       } else {
         setError("An error occurred. Please try again.");
       }
-
-      setUser("");
-      setIsLoggedIn(false);
     }
   };
 

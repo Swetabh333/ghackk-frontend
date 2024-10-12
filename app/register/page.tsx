@@ -1,6 +1,6 @@
 "use client";
 
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import axiosInstance from "../apis/axiosInstance";
@@ -47,19 +47,18 @@ export default function Register() {
       } else {
         // Handle validation errors or other response errors
         const data = response.data;
-        // @ts-ignore
-				setErrors(Array.isArray(data.error)? data.error.map((err: any) => err.msg)
+        setErrors(
+          Array.isArray(data.error)
+            ? data.error.map((err: { msg: string }) => err.msg)
             : [data.error],
         );
       }
-		// @ts-ignore	
     } catch (err) {
-      // Set a generic error message in case of failure
-      setErrors(["An error occurred. Please try again."]);
+      // set a generic error message in case of failure
+      setErrors(["An error occurred. Please try again." + err]);
     }
   };
 
-	
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">

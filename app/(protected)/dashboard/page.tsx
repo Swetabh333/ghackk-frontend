@@ -4,7 +4,6 @@ import { Card } from "@/components/ui/card";
 import Image from "next/image";
 import axiosInstance from "@/app/apis/axiosInstance";
 import Link from "next/link";
-import { useAuthStore } from "@/store/user";
 
 interface Webtoon {
   _id: string;
@@ -18,7 +17,6 @@ interface Webtoon {
 const Page = () => {
   const [webtoons, setWebtoons] = useState<Webtoon[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const { user } = useAuthStore((state) => state);
 
   useEffect(() => {
     // Fetch the webtoon data using axios
@@ -27,16 +25,12 @@ const Page = () => {
         const response = await axiosInstance.get("/webtoons/popular");
         setWebtoons(response.data.message); // assuming your API returns { message: [...] }
       } catch (error) {
-        setError("An error occurred while fetching the webtoons.");
+        setError("An error occurred while fetching the webtoons. " + error);
       }
     };
 
     fetchWebtoons();
   }, []);
-
-  const addToFavourite = async (title: string) => {
-    const response = await axiosInstance.post("", {});
-  };
 
   return (
     <div className="flex flex-col items-center p-6">
@@ -64,7 +58,7 @@ const Page = () => {
             </p>
             <button
               className="bg-[#F24B5B] p-3 rounded-md mt-2 text-white hover:opacity-80"
-              onClick={addToFavourite}
+              //  onClick={addToFavourite}
             >
               Add to Favourites
             </button>
