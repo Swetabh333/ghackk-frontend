@@ -25,7 +25,7 @@ export default function Home() {
 
     try {
       // Use axiosInstance for the POST request
-      const response = await axiosInstance.post("/auth/login", {
+      const response = await axiosInstance.post(`${axiosInstance.defaults.baseURL}/auth/login`, {
         username,
         password,
       });

@@ -6,6 +6,7 @@ import { useState } from "react";
 import MenuOverlay from "./MenuOverlay";
 import { useAuthStore } from "@/store/user";
 import { useRouter } from "next/navigation";
+import axiosInstance from "../apis/axiosInstance";
 
 const Navbar = () => {
   const [navbarOpen, setNavbarOpen] = useState(false);
@@ -13,11 +14,11 @@ const Navbar = () => {
   const router = useRouter();
   const handleLogOut = async () => {
     try {
-      const response = await fetch("http://localhost:3000/auth/logout", {
-        credentials: "include",
-      });
+      const response = await axiosInstance.get(
+        `${axiosInstance.defaults.baseURL}/auth/logout`,
+      );
 
-      if (response.ok) {
+      if (response.status === 200) {
         setUser("");
         setIsLoggedIn(false);
         router.push("/");
