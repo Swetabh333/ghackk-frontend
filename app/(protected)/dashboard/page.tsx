@@ -22,9 +22,7 @@ const Page = () => {
     // Fetch the webtoon data using axios
     const fetchWebtoons = async () => {
       try {
-        const response = await axiosInstance.get(
-          `${axiosInstance.defaults.baseURL}/webtoons/popular`,
-        );
+        const response = await axiosInstance.get(`/webtoons/popular`);
         setWebtoons(response.data.message); // assuming your API returns { message: [...] }
       } catch (error) {
         setError("An error occurred while fetching the webtoons. " + error);

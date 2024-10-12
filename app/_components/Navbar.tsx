@@ -14,9 +14,7 @@ const Navbar = () => {
   const router = useRouter();
   const handleLogOut = async () => {
     try {
-      const response = await axiosInstance.get(
-        `${axiosInstance.defaults.baseURL}/auth/logout`,
-      );
+      const response = await axiosInstance.get(`/auth/logout`);
 
       if (response.status === 200) {
         setUser("");

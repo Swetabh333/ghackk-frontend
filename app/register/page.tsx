@@ -39,10 +39,7 @@ export default function Register() {
 
     try {
       // Make the POST request using axiosInstance
-      const response = await axiosInstance.post(
-        `${axiosInstance.defaults.baseURL}/auth/register`,
-        formData,
-      );
+      const response = await axiosInstance.post(`/auth/register`, formData);
 
       // If the request is successful (status 200)
       if (response.status === 200) {

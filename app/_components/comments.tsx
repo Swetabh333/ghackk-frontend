@@ -19,7 +19,7 @@ const Comments = ({ webtoonId }: { webtoonId: string }) => {
   const fetchComments = async () => {
     try {
       const response = await axiosInstance.get(
-        `${axiosInstance.defaults.baseURL}/webtoons/comments/get/${webtoonId}`,
+        `/webtoons/comments/get/${webtoonId}`,
       );
       if (response.status === 200) {
         setComments(response.data.message);
@@ -32,13 +32,10 @@ const Comments = ({ webtoonId }: { webtoonId: string }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axiosInstance.post(
-        `${axiosInstance.defaults.baseURL}/webtoons/comments/add`,
-        {
-          comment: newComment,
-          id: webtoonId,
-        },
-      );
+      await axiosInstance.post(`/webtoons/comments/add`, {
+        comment: newComment,
+        id: webtoonId,
+      });
       setNewComment("");
       fetchComments();
     } catch (err) {
